@@ -1,0 +1,230 @@
+@import "./global.scss";
+
+td{padding:0px;}
+button{border:0px;}
+.data-label-area-container
+{
+    height:1002px;
+    width:410px;
+    position:absolute;
+    top:0;right:0;
+    background-color: aliceblue;
+    
+    #dataLabelArea
+    {
+        height:491px;
+        width:100%;
+        overflow-y:scroll;
+        padding:0px;
+        margin-bottom:10px;
+        list-style: none;
+        thead
+        {
+            height:30px;
+            width:100%;
+            .data-label{
+                height:45px;
+                width:100%;
+                overflow:hidden;
+                .data-label-show{
+                    margin:1px;
+                    float:left;
+                    height:43px;
+                    width:43px;
+                    line-height: 43px;
+                }
+                .data-label-select{
+                    margin:1px;
+                    float:left;
+                    height:43px;
+                    width:253px;
+                    line-height: 43px;
+                }
+            }
+        }
+        tbody{
+            width:100%;
+            height:446px;
+            overflow-y:scroll;
+            .data-label{
+                display:block;
+                height: 45px;
+                width:100%;
+                margin:0 0 5px 0;
+                background-color: '#E0E0E0';
+                .checkbox-wrap{
+                    height:45px;width:45px;
+                    .checkbox{
+                        margin:7.5px auto;
+                        display:'block';
+                        height:30px;width:30px;
+                        border-radius:2px;
+                    }
+                }
+                .select-wrap{
+                    display:'inline-block';
+                    width:255px;
+                    height:45px;
+                    .select{
+                        margin:7.5px auto;
+                        height:30px;width:240px;
+                        border-radius: 2px;
+                    }
+                }
+                .confirm{
+                    width:50px;
+                    height:45px;
+                    line-height: 45px;
+                    font-size: 19.5px;
+                    i{
+                        display:'block';
+                        width:30px;height:30px;
+                        margin:7.5px 10px;
+                        border-radius: 2px;
+                    }
+                }
+                .trash-can{
+                    width:50px;
+                    height:45px;
+                    line-height: 45px;
+                    font-size: 19.5px;
+                    i{
+                        display:'block';
+                        width:30px;height:30px;
+                        margin:7.5px 10px;
+                        border-radius: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    #classListArea
+    {
+        height:491px;
+        width:100%;
+        overflow-y:scroll;
+        padding:0px;
+        margin-bottom:10px;
+        list-style: none;
+        font-size:15.5px;
+        thead
+        {
+            height:30px;
+            width:100%;
+            .class-list{
+                height:45px;
+                width:100%;
+                overflow:hidden;
+                .class-list-show{
+                    padding:1;
+                    float:left;
+                    height:43px;
+                    width:43px;
+                    line-height: 43px;
+                }
+                .class-list-color{
+                    padding:1;
+                    float:left;
+                    height:43px;
+                    width:98px;
+                    line-height: 43px;
+                }
+                .class-list-select{
+                    padding:1;
+                    float:left;
+                    height:43px;
+                    width:153px;
+                    line-height: 43px;
+                }
+            }
+        }
+        tbody{
+            width:100%;
+            height:360px;
+            overflow-y:scroll;
+            .class-list{
+                display:block;
+                height: 45px;
+                width:100%;
+                background-color: '#E0E0E0';
+                overflow:hidden;
+                .checkbox-wrap{
+                    float:left;
+                    display:block;
+                    height:45px;width:45px;
+                    .checkbox{
+                        margin:7.5px auto;
+                        display:'block';
+                        height:30px;width:30px;
+                        border-radius:2px;
+                    }
+                }
+                .select-color{
+                    float:left;
+                    display:block;
+                    width:100px;height:45px;
+                    .color{
+                        display:block;
+                        width:85px;height:30px;
+                        margin:7.5px auto;
+                        border-radius: 2px;
+                    }
+                }
+                .select-wrap{
+                    float:left;
+                    display:block;
+                    width:155px;
+                    height:45px;
+                    .select{
+                        display:block;
+                        margin:7.5px auto;
+                        height:30px;width:140px;
+                        border-radius: 2px;
+                    }
+                }
+                .confirm{
+                    float:left;
+                    display:block;
+                    width:50px;
+                    height:45px;
+                    line-height: 45px;
+                    font-size: 19.5px;
+                    i{
+                        display:'block';
+                        width:30px;height:30px;
+                        margin:7.5px 10px;
+                        border-radius: 2px;
+                    }
+                }
+                .trash-can{
+                    float:left;
+                    display:block;
+                    width:50px;
+                    height:45px;
+                    line-height: 45px;
+                    font-size: 19.5px;
+                    i{
+                        display:'block';
+                        width:30px;height:30px;
+                        margin:7.5px 10px;
+                        border-radius: 2px;
+                    }
+                }
+            }
+        }
+        tfoot{
+            display:block;
+            height:40px;
+            width:400px;
+            #addClass{
+                display:block;
+                width:300px;height:38px;
+                margin:1px auto;
+                border-radius: 6px;
+                line-height: 38px;
+                font-size: 15.5px;
+            }
+        }
+    }
+}

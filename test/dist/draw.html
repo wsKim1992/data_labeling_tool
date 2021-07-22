@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" class="draw">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Data-Labeling Tool UI</title>
+<link href="main.css" rel="stylesheet"></head>
+<body>
+	<header>
+		<nav class="menu-draw">
+			<ul>
+				<li class="brush-properties-container">
+					<div class="brush-properties">
+						<div class="color-preview">
+							<input type="color" id="color-selector" title="Change brush color"/>
+						</div>
+
+						<a href="#" class="btn-nav brush-size" ondragstart="return false;">
+							<span class="size-value" title="Change brush size">20px</span> <span>&#8597;</span>
+							<div class="brush-size-menu">
+								<ui-slider id="size-slider-mobile" class="size-slider" data-text="Size:" data-min="1" data-max="200" data-unit="px"></ui-slider>
+							</div>
+						</a>
+
+						<ui-slider id="size-slider-main" class="size-slider" data-text="Size:" data-min="1" data-max="200" data-unit="px"></ui-slider>
+					</div>
+				</li>
+
+				<li class="room">
+					<a href="#" id="room-url" title="Copy link to clipboard" data-clipboard="">
+						<span class="url-container">
+							<span>Connecting...</span>
+						</span>
+						<i class="fas fa-copy url-icon"></i>
+					</a>
+				</li>
+
+				<li class="options-container">
+					<div><a href="#" class="btn-nav" title="Save image to disk" id="save" download="canvas.png"><i class="fas fa-save"></i> <span class="responsive-icon-text">Save</span></a></div>
+					<!-- <div><a href="#" class="btn-nav" title="Settings" id="settings"><i class="fas fa-cog"></i> <span class="responsive-icon-text">Settings</span></a>
+						<div class="options-panel">
+							<label><i class="fas fa-user"></i> user name</label>
+							<input type="text" maxlength="30"/>
+
+							<div class="admin-settings hidden" id="admin-settings">
+								<span><i class="fas fa-expand"></i> canvas size</span>
+								<div class="canvas-size">
+									<input id="canvas-width" min="0" max="10000" type="number"/>
+									<input id="canvas-height" min="0" max="10000" type="number"/>
+								</div>
+
+								<button class="btn" id="canvas-size-apply" disabled>Apply</button>
+							</div>
+						</div>
+					</div> -->
+				</li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<ui-toolbar id="toolbar">
+
+            <aside class="toolbar">
+                <ul>
+                    <li><a class="logo toolbar-logo" href="index.html"></a></li>
+            
+                    <li title="Tools"><i class="fas fa-toolbox separator"></i></li>
+                    <!-- <li title="Brush" data-toolname="BRUSH"><i class="fas fa-brush btn-tool"></i></li>
+                    <li title="Paint Roller" data-toolname="PAINT_ROLLER"><i class="fas fa-paint-roller btn-tool"></i></li> -->
+                    <li title="Pencil" data-toolname="PENCIL"><i class="fas fa-pencil-alt btn-tool"></i></li>
+                    <li title="Eraser" data-toolname="ERASER"><i class="fas fa-eraser btn-tool"></i></li>
+                    <!-- <li title="Text" data-toolname="TEXT"><i class="fas fa-font btn-tool"></i></li> -->
+                    <li title="Line" data-toolname="LINE"><span class="btn-tool line-icon">/</span></li>
+                    <!-- <li title="Rectangle" data-toolname="RECT"><i class="far fa-square btn-tool"></i></li>
+                    <li title="Ellipse" data-toolname="ELLIPSE"><i class="far fa-circle btn-tool"></i></li> -->
+                    <!-- <li title="Fill" data-toolname="FILL"><i class="fas fa-fill btn-tool"></i></li> -->
+                    <li title="Polygon" data-toolname="POLYGON"><i class="fas fa-draw-polygon"></i></li>
+					<li title="Color Picker" data-toolname="COLOR_PICKER"><i class="fas fa-eye-dropper btn-tool"></i></li>
+                    <li title="Change Background" data-toolname="BACKGROUND_IMAGE"><i class="fas fa-image btn-tool"></i></li>
+            
+                    <li class="color-separator" title="Colors"><i class="fas fa-palette separator"></i></li>
+                    <li class="btn-color" title="Black" data-color="#000000"></li>
+                    <li class="btn-color" title="Red" data-color="#df3939"></li>
+                    <li class="btn-color" title="Green" data-color="#3fe23f"></li>
+                    <li class="btn-color" title="Blue" data-color="#1b86eb"></li>
+                    <li class="btn-color" title="White" data-color="#ffffff"></li>
+                </ul>
+            </aside>
+        </ui-toolbar>
+		<div class="canvas-layers">
+			<canvas id="bgCanvas" oncontextmenu="return false;"></canvas>
+			<canvas id="drawArea" oncontextmenu="return false;"></canvas>
+			<canvas id="shapePreview" oncontextmenu="return false;"></canvas>
+			<div class="text-cursor hidden"></div>
+		</div>
+
+		<div class="data-label-area-container">
+			<table id="dataLabelArea">
+				<thead>
+					<tr class="data-label">
+						<td class="data-label-show">show</td>
+						<td class="data-label-select">Select Class</td>	
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="data-label">
+						<td class="checkbox-wrap">
+							<input class="checkbox" type="checkbox" />
+						</div>
+						<td class="select-wrap">
+							<select class="select" name="select_cate">
+								<option value="top">상의</option>
+								<option value="bottom">하의</option>
+								<option value="hand">손</option>
+								<option value="leg">다리</option>
+							</select>
+						</td>
+						<td class="trash-can">
+							<i class="fas fa-trash"></i>
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+
+			<table id="classListArea">
+				<thead>
+					<tr class="class-list">
+						<td class="class-list-show">show</td>
+						<td class="class-list-color">Select Color</td>
+						<td class="class-list-select">Select Class</td>	
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="class-list">
+						<td class="checkbox-wrap">
+							<input class="checkbox" type="checkbox" />
+						</div>
+						<td class="select-color">
+							<select class="color" >
+								<option value="#FF0000">red</option>
+								<option value="#1B3DE8">blue</option>
+								<option value="#00FFFF">light-blue</option>
+								<option value="FF8000">orange</option>
+							</select>
+						</td>
+						<td class="select-wrap">
+							<select class="select" name="select_cate">
+								<option value="top">상의</option>
+								<option value="bottom">하의</option>
+								<option value="hand">손</option>
+								<option value="leg">다리</option>
+							</select>
+						</td>
+						<td class="confirm">
+							<i class="fas fa-check-circle"></i>
+						</td>
+						<td class="trash-can">
+							<i class="fas fa-trash"></i>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<button id="addClass">
+								<i class="fas fa-plus-circle"></i>Add Class
+							</button>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<div class="modal hidden" id="background-modal">
+            <div class="modal-content background-selection">
+                <div class="modal-header">
+                    <i id="close-modal" class="fas fa-times-circle close-btn"></i>
+                </div>
+        
+                <h3 class="title">Background</h3>
+        
+                <ul class="tabs">
+                    <li class="active" id="tab-image">Image</li>
+                    <li id="tab-color">Solid Color</li>
+                </ul>
+        
+                <input id="image-file-input" class="hide-on-drop" type="file" accept="image/*"/>
+                <div class="drop-area">
+                    <div class="hide-on-drop hide-on-image-input">
+                        <p>or drop image here</p>
+                        <i class="fas fa-image fa-8x"></i>
+                    </div>
+        
+                    <img id="bg-image-preview"/>
+                </div>
+        
+                <button id="add-image" class="btn" disabled>Add Image</button>
+        
+                <div class="tab-content hidden" id="tab-content-color">
+                    <div class="bg-color-settings">
+                        <input type="color" id="bg-color" title="Click to edit"/>
+                    </div>
+        
+                    <div class="buttons">
+                        <button id="bg-clear" class="btn-warning clear-btn">Make Transparent</button>
+                        <button id="bg-fill" class="btn">Fill With Color</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</main>
+<script type="text/javascript" src="main.js"></script></body>
+</html>

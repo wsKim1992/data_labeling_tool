@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas1{
+            width:800px;height:800px;
+            border: 1px solid #000000;
+        }
+    </style>
+    
+    <script type="module">
+        let prevX = null;
+        let prevY = null;
+        let startX =null;
+        let startY = null;
+
+
+        let drawCanvasImage=async (from,to)=>{
+            let image = new Image();
+            let toContext = to.getContext('2d');
+            image.src = from.toDataURL();
+            image.onload = await function(){}
+            toContext.drawImage(image,0,0,to.width,to.height);
+        }
+
+        window.onload=function(){
+            let canvas = document.getElementById("canvas1");
+            let stateCanvas = document.getElementById("state_canvas");
+            let context = canvas.getContext("2d");
+
+            context.lineWidth = 4;
+            context.strokeStyle = '#000000';
+            context.lineCap = 'round';
+            //context.globalAlpha = "0.1";
+            let is_draw = false;
+            let is_polygon = false;
+
+            const mouseDown=(e)=>{
+                const x = e.clientX-canvas.offsetLeft;
+                const y = e.clientY-canvas.offsetTop;
+                
+                if(!is_draw){
+                    if(prevX===null){
+                        if(is_polygon){
+                            startX=x;startY=y;
+                        }
+                        context.beginPath();
+                        prevX=x;
+                        prevY=y;
+
+                    }
+                    
+                    context.arc(x,y,6,0,2*Math.PI,true);
+                    context.moveTo(x,y);
+                    context.stroke();
+                    is_draw=true;
+                }else{
+                    let midX = prevX+(x-prevX)/2;
+                    let midY = prevY+(y-prevY)/2;
+                    
+                    context.lineTo(midX,midY);
+                    context.arc(midX,midY,6,0,2*Math.PI,true);
+                    context.moveTo(midX,midY);
+
+                    context.lineTo(x,y);
+                    context.arc(x,y,6,0,2*Math.PI,true);
+                    context.moveTo(x,y);
+                    
+                    //context.moveTo(midX,midY);
+                    context.stroke();
+                    if(!is_polygon){
+                        is_draw=false;
+                        prevX=null;
+                        prevY=null;
+                        startX=null;startY=null;
+                    }else{
+                        prevX = x;prevY=y;
+                    }
+
+                }
+                
+                let image = new Image();
+                drawCanvasImage(canvas,stateCanvas);
+            }
+
+            const mouseMove=async(e)=>{
+                if(is_draw){
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    drawCanvasImage(stateCanvas,canvas);
+                    const x = e.clientX-canvas.offsetLeft;
+                    const y = e.clientY-canvas.offsetTop;
+                    context.beginPath();
+                    context.moveTo(prevX,prevY);
+                    context.lineTo(x,y);
+                    context.stroke();
+                    
+                }
+            }
+
+
+            const finishDrawing = (e)=>{
+                /* const x = e.clientX;
+                const y = e.clientY; */
+                console.log(e.keyCode)
+                if(e.keyCode===27){
+                    if(is_polygon){
+                        context.lineTo(startX,startY);
+                        //context.closePath();
+                        context.stroke();
+                        prevX=null;prevY=null;
+                        startX=null;startY=null;
+                        //console.log("esc");
+                        is_draw=false;
+                        is_polygon=false;
+                    }
+                }
+                
+            }
+
+            canvas.addEventListener('mousedown',mouseDown);
+            canvas.addEventListener('mousemove',mouseMove);
+            window.addEventListener('keydown',finishDrawing);
+
+            let file = document.querySelector("#file");
+            file.addEventListener("change",(e)=>{
+                const img_file = e.target.files[0];
+                console.log(img_file.type.match('image/*'));
+                if(img_file.type.match('image/*')){
+                    let mime_type = img_file.type.match('image/*').input;
+                    mime_type = mime_type.slice(mime_type.lastIndexOf('/')+1);
+                    console.log(mime_type);
+                    const img = new Image();
+                    let reader = new FileReader();
+                    reader.onload=async (e)=>{
+                        img.src = e.target.result;
+                        img.onload=function(){
+                            context.fillRect(0,0,canvas.width,canvas.height);
+                            context.drawImage(img,0,0,canvas.width,canvas.height);
+                            canvas.toDataURL("image/jpeg");
+                        };
+                       
+                    }
+                    reader.readAsDataURL(img_file);
+                }
+            })
+            const btn = document.querySelector("#to_polygon");
+            btn.addEventListener("click",(e)=>{
+                e.preventDefault();
+                prevX=null;prevY=null;
+                startX=null;startY=null;
+                is_draw=false;
+                is_polygon=!is_polygon;
+            })
+
+            const clear_btn = document.querySelector("#clear");
+            clear_btn.addEventListener("click",(e)=>{
+                e.preventDefault();
+                context.clearRect(0,0,canvas.width,canvas.height);
+                context= canvas.getContext('2d');
+                let stateContext = stateCanvas.getContext('2d');
+                stateContext.clearRect(0,0,stateCanvas.width,stateCanvas.height);
+                is_polygon=false;
+                is_draw=false;
+            })
+            const back_btn = document.querySelector("#back");
+            back_btn.addEventListener("click",(e)=>{
+                e.preventDefault();
+                context.clearRect(0,0,canvas.width,canvas.height);
+                const stateContext = stateCanvas.getContext('2d');
+                stateContext.clearRect(0,0,stateCanvas.width,stateCanvas.height)
+            })
+        }
+    </script>
+
+</head>
+<body>
+    <canvas id="canvas1" height="800" width="800">This browser doesn't support canvas</canvas>
+    <canvas id="state_canvas" height="800" width="800" display="none"></canvas>
+    <input type="file" id="file" />
+    <button id="to_polygon">to polygon</button>
+    <button id="back">이전으로</button>
+    <button id="clear">clear</button>
+</body>
+</html>
